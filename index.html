@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="styles/style.css">
+  <title>Frontend Mentor | Todo app</title>
+</head>
+<body class="light-mode">
+<div class="container">
+  <header>
+    <h1>Todo</h1>
+    <span class="mode"></span>
+  </header>
+  <form id="new-item">
+  <div class="todos new">
+    <div class="todo new">
+        <input type="checkbox" id="status">
+        <input type="text" id="item" placeholder="Create new todo...">
+    </div>
+  </div>
+</form>
+  <div class="todos" id="todos">
+    <div id="items">
+    </div>
+    <div class="nav">
+      <span class="number-items"></span>
+       <div class="links">
+         <a href="#" id="all" class="active">All</a>
+         <a href="#" id="active">Active</a>
+         <a href="#" id="completed">Completed</a>
+       </div>
+       <a href="#" id="clear" title="Clear Completed">Clear Completed</a>
+     </div>
+  </div>
+  <div class="nav mobile">
+     <div class="links mobile">
+       <a href="#" id="all" class="active">All</a>
+       <a href="#" id="active">Active</a>
+       <a href="#" id="completed">Completed</a>
+     </div>
+   </div>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+@use "sass:map";
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
+
+
+@function size($size){
+    @return ($size/16)*1rem;
+}
+
+@mixin phone{
+    @media (max-width: 450px){
+        @content;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+// Dark colors
+$dark-colors: (
+    "body": #161722,
+    "secondary": hsl(235, 24%, 19%),
+    "todo-text": hsl(234, 39%, 85%),
+    "todo-line": hsl(233, 14%, 35%),
+    "todo-completed": #cacde8
+);
+
+// Light colors
+$light-colors: (
+    "body": #fafafa,
+    "secondary": #fff,
+    "todo-line": #e4e5f1,
+    "todo-completed": #d2d3db,
+    "todo-title": #484b6a,
+    "link-active":hsl(220, 98%, 61%),
+    "link": #9394a5
+);
+
+body {
+
+    // Global styling
+    margin: 0;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: size(18);
+    transition: all 800ms ease;
+
+    // Container
+    .container{
+        margin: auto;
+        max-width: 800px;
+        padding: size(50) size(25);
+    }
+
+    // Header styling
+    header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        h1{
+            text-transform: uppercase;
+            color: #FFF;
+        }
+        span.mode{
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+        }
+    }
+
+    // Navigation styling
+    .nav{
+        &.mobile{
+            display: none;
+        }
+
+        @include phone{
+            &.mobile{
+                display: block;
+                text-align: center;
+                margin-top: size(30);
+            }
+            .links:not(.links.mobile){
+                display: none;
+            }
+            .links.mobile a{
+                text-decoration: none;
+                font-size: 1rem;
+            }
+            
+        }
+    }
+
+    // input styling
+    input{
+        border: none;
+        font-size: size(18);
+        font-family: inherit;
+        background: transparent;
+        color: inherit;
+
+        // input placeholder
+        &::placeholder{
+            color: inherit;
+        }
+
+        // input focus state
+        &:focus{
+            outline: none;
+            background: transparent;
+        }
+
+        // checkbox styling
+        &[type="checkbox"]
+        {
+            appearance: none;
+            padding: 12px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 30px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        &[type="checkbox"]::before{
+            position: absolute;
+            content: '';
+            top: 1px;
+            left: 1px;
+            bottom: 1px;
+            right: 1px;
+            border-radius: 50%;
+            background-color: white;
+        }
+
+        &[type="checkbox"]:checked::before{
+            content: '';
+            background-color: transparent;
+        }
+
+        // checkbox styling in other states
+        &[type="checkbox"]:checked,
+        &[type="checkbox"]:active,
+        &[type="checkbox"]:checked:active,
+        &[type="checkbox"]:hover{
+            background: linear-gradient( 130deg ,hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+            border: none!important;
+        }
+
+       
+
+        &[type="checkbox"]:checked::after{
+            content: ' ';
+            width: 11px;
+            height: 9px;
+            background: url('../images/icon-check.svg');
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            color: #FFF;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    // in dark mode
+    &.dark-mode{
+        background: map-get($dark-colors, "body") url('../images/bg-desktop-dark.jpg') no-repeat;
+        background-size: 100% 300px;
+
+        // span that changes mode
+        span.mode{
+            background-image: url('../images/icon-sun.svg');
+        }
+
+        // change color for checkbox and todo title
+        .todo-status:checked + .todo-title{
+            color: map-get($dark-colors, "todo-completed");
+        }
+
+        // change colors in todos container
+        .todos{
+            background:map-get($dark-colors, "secondary");
+            color: map-get($dark-colors, "todo-text" );
+            .todo{
+                border-bottom: solid thin map-get($dark-colors, "todo-line");
+                &.new{
+                    border: none;
+                }
+            }
+        }
+    
+    }
+
+    // in light mode
+    &.light-mode{
+        background: map-get($light-colors, "body") url('../images/bg-desktop-light.jpg') no-repeat;
+        background-size: 100% 300px;
+
+        .todo-title,
+        #item{
+            color: map-get($light-colors, "todo-title");
+            &::placeholder{
+                color: map-get($light-colors, "link");
+            }
+        }
+
+        // change checkbox border color
+        input[type="checkbox"]{
+            border: map-get($light-colors, "todo-line") 1px solid;
+            &:hover{
+                border: map-get($light-colors, "link") 1px solid;
+            }
+            &:checked{
+                border: none;
+               
+            }
+            &:checked + .todo-title{
+                color: map-get($light-colors, "todo-completed");
+                text-decoration: line-through;
+            }
+        }
+        
+        
+        // span changes mode: dark / light
+        span.mode{
+            background-image: url('../images/icon-moon.svg');
+        }
+
+        // change colors in todos container
+        .todos{
+            background:map-get($light-colors, "secondary");
+            .todo:not(.new){
+                border-bottom: solid thin map-get($light-colors, "todo-line");
+            }
+            
+        }
+
+        // change nav links
+        .nav{
+            a,
+            span,
+            .links a{
+                color: map-get($light-colors, "link");
+            }
+            .links{
+                a.active,
+                a:hover,
+                a:active{
+                    color: map-get($light-colors, "link-active");
+                }
+ 
+            }
+
+            // nav links only for smaller screens
+            @include phone{
+                &.mobile{
+                    background:map-get($light-colors, "secondary");
+                    border-radius: size(8);
+                    box-shadow: 2px 4px 20px 11px rgba(0, 0, 0, 0.06);
+                    padding: size(20);
+                }
+            }
+            
+        }
+      
+    }
+    
+}
+
+
+
+// Todos container
+.todos{
+    border-radius: size(8);
+    box-shadow: 2px 4px 20px 11px rgba(0, 0, 0, 0.06);
+
+    // individual todo item
+    .todo{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: size(25) size(15);
+
+        &:hover{
+            cursor: grabbing;
+        }
+        
+        .todo-title{
+            margin-right: auto;
+        }
+
+        .delete{
+            opacity: 0;
+            cursor: pointer;
+            transition: all 300ms linear;
+            
+        }
+        &:hover .delete{
+            opacity: 1;
+        }
+    }
+
+    // new todo container
+    &.new{
+        margin-bottom: size(48);
+      
+    }
+    // new todo input text
+    #item{
+        margin-right: auto;
+    }
+
+    // Todo navigation footer
+    .nav{
+        display: flex;
+        padding: size(25);
+        font-size: size(14);
+        justify-content: space-between;
+        .links a{
+            font-weight: 700;
+        }
+        a{
+            text-decoration: none;
+            color: inherit;
+            display: inline-block;
+            &::before{
+                display: block;
+                content: attr(title);
+                font-weight: 700;
+                height: 0;
+                overflow: hidden;
+                visibility: hidden;
+            }
+        }
+    }
+}
